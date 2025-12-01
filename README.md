@@ -170,3 +170,7 @@ These helper scripts are included for debugging and validation:
 
 > These are **not part of the main triage pipeline** but demonstrate setup and troubleshooting steps.
 
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).  
+You are free to use, modify, and distribute it with attribution.
