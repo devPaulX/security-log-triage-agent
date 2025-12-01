@@ -1,4 +1,5 @@
 from src.models import Incident
+from src.gemini import explain_incident
 import logging
 
 logging.basicConfig(
@@ -42,6 +43,14 @@ def score_incident(incident: Incident) -> Incident:
         incident.severity = "medium"
     else:
         incident.severity = "low"
+
+    # Attach Gemini explanation for high severity
+    if incident.severity == "high":
+        try:
+            incident.explanation = explain_incident(incident)
+        except Exception as e:
+            logging.error(f"Gemini explanation failed: {e}")
+            incident.explanation = "Explanation unavailable due to API error."
 
     logging.info(f"Incident {incident.id} scored={incident.score}, severity={incident.severity}")
     return incident

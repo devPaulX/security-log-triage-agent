@@ -68,7 +68,10 @@ def render_markdown(report: Report) -> str:
         md.append(f"- IP: {inc.ip}")
         md.append(f"- Count: {inc.count}")
         md.append(f"- Severity: {inc.severity}")
-        md.append(f"- Evidence: {inc.evidence[:3]} ...\n")
+        md.append(f"- Evidence: {inc.evidence[:3]} ...")
+        if inc.explanation:   # ✅ Added Gemini explanation without modifying existing fields
+            md.append(f"- Gemini Explanation: {inc.explanation}")
+        md.append("")  # blank line
 
     md.append("## Recommendations")
     for rec in report.recommendations:

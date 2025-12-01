@@ -2,7 +2,7 @@
 from datetime import datetime
 from typing import List, Dict, Optional
 from pydantic import BaseModel, Field
-
+from dataclasses import dataclass
 
 class Event(BaseModel):
     """
@@ -38,7 +38,7 @@ class Incident(BaseModel):
     score: int = 0                               # risk score (heuristics)
     severity: str = "low"                        # low/medium/high
     notes: Optional[str] = None                  # free-form summary
-
+    explanation: str | None = None  # Gemini explanation
 
 class Report(BaseModel):
     """

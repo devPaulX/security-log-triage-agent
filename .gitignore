@@ -1,3 +1,14 @@
+# Virtual environment
 .venv/
+
+# Python cache
 __pycache__/
 *.pyc
+
+# Logs and reports
+# output/
+# data/input/*.csv
+
+# OS/editor junk
+.DS_Store
+.vscode/
