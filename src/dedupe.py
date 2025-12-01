@@ -1,12 +1,18 @@
-# src/dedupe.py
 from typing import List, Dict
 from src.models import Event, Incident
 from datetime import datetime
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s"
+)
 
 def group_events(events: List[Event]) -> List[Incident]:
     """
     Group similar events into incidents based on key fields.
     """
+    logging.info(f"Starting grouping for {len(events)} events")
     incidents: Dict[str, Incident] = {}
 
     for event in events:
@@ -14,6 +20,7 @@ def group_events(events: List[Event]) -> List[Incident]:
         key = f"{event.action}|{event.host}|{event.user}|{event.ip}|{event.bucket}"
 
         if key not in incidents:
+            logging.debug(f"Creating new incident for key: {key}")
             incidents[key] = Incident(
                 id=key,
                 action=event.action,
@@ -32,5 +39,7 @@ def group_events(events: List[Event]) -> List[Incident]:
             inc.count += 1
             inc.last_seen = max(inc.last_seen, event.timestamp)
             inc.evidence.append(event.raw)
+            logging.debug(f"Updated incident {key}: count={inc.count}")
 
+    logging.info(f"Generated {len(incidents)} incidents")
     return list(incidents.values())

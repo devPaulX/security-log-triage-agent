@@ -1,13 +1,19 @@
-# src/parser.py
 import pandas as pd
 from datetime import datetime
 from typing import List
 from src.models import Event
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s"
+)
 
 def load_events(file_path: str) -> List[Event]:
     """
     Load CSV logs and convert each row into an Event object.
     """
+    logging.info(f"Loading events from {file_path}")
     df = pd.read_csv(file_path)
 
     events = []
@@ -32,4 +38,5 @@ def load_events(file_path: str) -> List[Event]:
 
         events.append(event)
 
+    logging.info(f"Parsed {len(events)} events")
     return events

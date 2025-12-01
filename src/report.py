@@ -1,19 +1,28 @@
-# src/report.py
 from datetime import datetime
 from typing import List
 from src.models import Incident, Report
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s"
+)
 
 def generate_report(incidents: List[Incident]) -> Report:
     """
     Create a triage report summarizing incidents and stats.
     """
+    logging.info(f"Generating report from {len(incidents)} incidents")
+
     # Calculate stats
     stats = {"low": 0, "medium": 0, "high": 0}
     for inc in incidents:
         stats[inc.severity] += 1
+    logging.info(f"Severity breakdown: {stats}")
 
     # Sort incidents by score (highest first)
     top_incidents = sorted(incidents, key=lambda x: x.score, reverse=True)[:5]
+    logging.info(f"Selected top {len(top_incidents)} incidents for report")
 
     # Recommendations (simple heuristics)
     recommendations = []
@@ -23,6 +32,8 @@ def generate_report(incidents: List[Incident]) -> Report:
         recommendations.append("Review medium severity incidents for potential escalation.")
     if stats["low"] > 0:
         recommendations.append("Low severity incidents can be monitored or ignored.")
+
+    logging.info("Report generation complete")
 
     return Report(
         generated_at=datetime.utcnow(),
@@ -38,6 +49,8 @@ def render_markdown(report: Report) -> str:
     """
     Render the Report object into Markdown text.
     """
+    logging.info("Rendering report into Markdown format")
+
     md = []
     md.append(f"# Security Log Triage Report")
     md.append(f"Generated at: {report.generated_at}\n")
@@ -61,4 +74,5 @@ def render_markdown(report: Report) -> str:
     for rec in report.recommendations:
         md.append(f"- {rec}")
 
+    logging.info("Markdown rendering complete")
     return "\n".join(md)
