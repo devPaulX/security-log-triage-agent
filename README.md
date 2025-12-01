@@ -68,8 +68,8 @@ Set your API key before running:
 
 Run the triage pipeline with the included sample input:
 
-```bash
-python -m src.cli triage data/input/logs.csv --output output/report.md
+```powershell
+python -m src.cli data/input/logs.csv --output output/report.md
 ```
 
 ### Example Output
